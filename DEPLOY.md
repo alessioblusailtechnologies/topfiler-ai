@@ -31,12 +31,14 @@ Al primo deploy Render chiede i valori mancanti. Usa gli stessi del `.env` local
 - `ANTHROPIC_API_KEY`
 - `MISTRAL_API_KEY`
 - `SUPABASE_URL`
-- `SUPABASE_SERVICE_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
 
 **topfiler3-web**
 - `SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY` (la service role key Supabase)
+- `SUPABASE_SERVICE_ROLE_KEY`
 - `TOPFILER_BACKEND_URL` → iniettato in automatico dal backend (`fromService`). Se Render fornisce solo l'host, lo schema `https://` viene aggiunto dal codice. In caso di problemi, impostalo a mano: `https://topfiler3-backend.onrender.com`.
+
+> `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` sono **gli stessi valori** in entrambi i servizi (URL del progetto + service_role key di Supabase). Ogni servizio ha il proprio set di variabili, quindi vanno inseriti in tutti e due.
 
 Le variabili non segrete (modelli, `SUPABASE_STORAGE_BUCKET`, dimensioni embedding) sono già nel `render.yaml`.
 
