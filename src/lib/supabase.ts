@@ -1,5 +1,14 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { WebSocket as WsWebSocket } from 'ws';
 import { env, requireSupabase } from '../env';
+
+// supabase-js 2.108+ (modulo realtime) pretende un `WebSocket` GLOBALE: su
+// Node < 22 non esiste e i tool (rpc/from) falliscono con "Node.js 20 detected
+// without native WebSocket support". Forniamo un polyfill, così il backend
+// funziona su qualunque versione di Node a prescindere dal runtime di Render.
+if (typeof (globalThis as { WebSocket?: unknown }).WebSocket === 'undefined') {
+    (globalThis as { WebSocket?: unknown }).WebSocket = WsWebSocket;
+}
 
 // ===========================================================================
 // Client Supabase con SERVICE ROLE. Usato per:

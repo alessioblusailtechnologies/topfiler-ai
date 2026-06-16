@@ -21,7 +21,14 @@ import { searchDocuments } from '../search/search-docs';
 
 const app = new Hono();
 
-app.get('/api/health', (c) => c.json({ ok: true, agent: 'topFiler3' }));
+app.get('/api/health', (c) =>
+    c.json({
+        ok: true,
+        agent: 'topFiler3',
+        node: process.version,
+        websocket: typeof (globalThis as { WebSocket?: unknown }).WebSocket !== 'undefined',
+    }),
+);
 
 app.post('/api/chat', async (c) => {
     let body: { sessionId?: string; message?: string };
