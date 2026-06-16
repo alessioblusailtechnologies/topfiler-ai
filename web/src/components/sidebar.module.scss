@@ -26,6 +26,23 @@
     b { font-weight: 800; }
 }
 
+/* X di chiusura nel brand — visibile solo nel drawer mobile */
+.closeDrawer {
+    display: none;
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 4px;
+    i { font-size: 20px; opacity: 0.9; }
+}
+
+/* backdrop del drawer — attivo solo su mobile (vedi media query) */
+.backdrop {
+    display: none;
+}
+
 .newChat {
     margin: 14px;
     display: flex;
@@ -122,9 +139,38 @@
 }
 
 @media (max-width: 768px) {
-    .sidebar { width: 64px; }
-    .brand span, .newChat span, .listLabel, .itemTitle, .footer { display: none; }
-    .newChat { margin: 12px 8px; padding: 10px 0; }
-    .item { justify-content: center; }
-    .del { display: none; }
+    /* la sidebar diventa un drawer a scomparsa, fuori dal flusso (il contenuto
+       occupa tutta la larghezza); si apre col burger nell'header. */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100dvh;
+        z-index: 200;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        box-shadow: 2px 0 18px rgba(0, 0, 0, 0.2);
+        border-right: none;
+    }
+    .open {
+        transform: translateX(0);
+    }
+    .closeDrawer {
+        display: inline-flex;
+        align-items: center;
+    }
+    .backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 150;
+        background: rgba(0, 0, 0, 0.45);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+    }
+    .backdropOpen {
+        opacity: 1;
+        pointer-events: auto;
+    }
 }

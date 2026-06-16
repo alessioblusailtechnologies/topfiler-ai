@@ -26,6 +26,17 @@
     color: var(--tf-blue);
     i { font-size: 20px; }
 }
+/* burger: nascosto su desktop, visibile su mobile per aprire il drawer */
+.burger {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--tf-blue);
+    cursor: pointer;
+    padding: 0;
+    align-items: center;
+    i { font-size: 20px; }
+}
 .headerRight {
     display: flex;
     align-items: center;
@@ -273,13 +284,15 @@
     .messages { padding: 14px; }
     .message { max-width: 95%; }
     .inputArea { padding: 12px 14px; }
+    .burger { display: inline-flex; }
 }
 
 @media (max-width: 600px) {
     .header { padding: 0 12px; }
     .headerRight { gap: 8px; }
-    /* il titolo lungo non entra: lascio solo l'icona a sinistra */
+    /* lascio solo il burger a sinistra: nascondo titolo e icona decorativa */
     .title { display: none; }
+    .headerLeft > i { display: none; }
     /* "Nuova chat" diventa solo icona */
     .newBtn {
         gap: 0;

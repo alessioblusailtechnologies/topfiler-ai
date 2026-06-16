@@ -201,6 +201,13 @@ export default function ChatView({ initialChat }: { initialChat?: InitialChat })
         <div className={styles.chat}>
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
+                    <button
+                        className={styles.burger}
+                        onClick={() => window.dispatchEvent(new CustomEvent('tfai:toggle-sidebar'))}
+                        aria-label="Apri menu conversazioni"
+                    >
+                        <i className="fas fa-bars" />
+                    </button>
                     <i className="fas fa-comments" />
                     <span className={styles.title}>topFiler3 · Assistente documentale</span>
                 </div>
