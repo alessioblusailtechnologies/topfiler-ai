@@ -4,9 +4,11 @@ import { streamSSE } from 'hono/streaming';
 import { env } from '../env';
 import { log } from '../lib/logger';
 import { topfilerAgent, hasMemory } from '../mastra/index';
-import { ingestDocument } from '../ingestion/ingest-document';
 import { distinctEmployeeNames } from '../lib/supabase';
 import { searchDocuments } from '../search/search-docs';
+// NB: l'ingestion (pdf-parse, officeparser, OCR Mistral, oracledb) è caricata
+// DINAMICAMENTE dentro /api/ingest, così il processo del server resta leggero
+// (chat/ricerca/export non ne hanno bisogno) — importante sui 512MB di Render.
 
 // ===========================================================================
 // Server HTTP minimale (Hono):
@@ -128,6 +130,8 @@ app.post('/api/ingest', async (c) => {
     const nameRegistry = new Set<string>(await distinctEmployeeNames());
 
     try {
+        // Caricamento on-demand: tiene fuori dallo startup l'intera pipeline pesante.
+        const { ingestDocument } = await import('../ingestion/ingest-document');
         const result = await ingestDocument(
             {
                 sourceOracleId: null,

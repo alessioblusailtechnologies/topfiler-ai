@@ -20,6 +20,9 @@ services:
     envVars:
       - key: NODE_VERSION
         value: "20.18.1"
+      # Tetto heap V8 sotto i 512MB del piano free (evita l'abort prematuro).
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=460"
       # Anthropic (agente + chiamate di servizio classify/extract/sql-gen)
       - key: ANTHROPIC_API_KEY
         sync: false

@@ -1,9 +1,11 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
 import { randomUUID } from 'node:crypto';
-import PDFDocument from 'pdfkit';
-import ExcelJS from 'exceljs';
 import { ensureBucket, uploadFile } from '../../lib/supabase';
+
+// NB: pdfkit ed exceljs sono librerie pesanti e si usano SOLO quando l'utente
+// esporta un file: le importiamo dinamicamente dentro i builder, così non
+// gravano sullo startup del server (rilevante sui 512MB del piano free Render).
 
 // ===========================================================================
 // Tool di ESPORTAZIONE — create_excel / create_csv / create_pdf.
@@ -85,6 +87,7 @@ async function publish(
 // Excel (.xlsx) via exceljs
 // ---------------------------------------------------------------------------
 async function buildXlsx(title: string | undefined, cols: Col[], rows: Record<string, unknown>[]): Promise<Buffer> {
+    const { default: ExcelJS } = await import('exceljs');
     const wb = new ExcelJS.Workbook();
     const ws = wb.addWorksheet('Dati');
     let r = 1;
@@ -136,7 +139,8 @@ function buildCsv(cols: Col[], rows: Record<string, unknown>[]): Buffer {
 // ---------------------------------------------------------------------------
 // PDF via pdfkit — titolo + tabella semplice con a-capo automatico di pagina
 // ---------------------------------------------------------------------------
-function buildPdf(title: string | undefined, cols: Col[], rows: Record<string, unknown>[]): Promise<Buffer> {
+async function buildPdf(title: string | undefined, cols: Col[], rows: Record<string, unknown>[]): Promise<Buffer> {
+    const { default: PDFDocument } = await import('pdfkit');
     return new Promise((resolve, reject) => {
         const doc = new PDFDocument({ margin: 40, size: 'A4', layout: 'landscape' });
         const chunks: Buffer[] = [];
