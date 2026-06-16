@@ -11,7 +11,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 20px;
+    /* stessa altezza della striscia brand della sidebar (56px): così il bordo
+       inferiore della topbar è allineato a quello della sidebar. */
+    height: 56px;
+    padding: 0 20px;
     border-bottom: 1px solid var(--tf-border);
     background: #fafbfc;
     flex-shrink: 0;
@@ -270,4 +273,22 @@
     .messages { padding: 14px; }
     .message { max-width: 95%; }
     .inputArea { padding: 12px 14px; }
+}
+
+@media (max-width: 600px) {
+    .header { padding: 0 12px; }
+    .headerRight { gap: 8px; }
+    /* il titolo lungo non entra: lascio solo l'icona a sinistra */
+    .title { display: none; }
+    /* "Nuova chat" diventa solo icona */
+    .newBtn {
+        gap: 0;
+        padding: 8px;
+        font-size: 0;
+        i { font-size: 14px; }
+    }
+    .text { font-size: 14px; padding: 10px 13px; }
+    .avatar { width: 30px; height: 30px; font-size: 12px; }
+    .message { gap: 8px; }
+    .disclaimer { font-size: 10px; }
 }

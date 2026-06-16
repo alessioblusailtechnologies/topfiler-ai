@@ -177,6 +177,7 @@ export default function SearchView() {
 
                 {/* Tabella risultati */}
                 {response && !loading && results.length > 0 && (
+                    <div className={styles.tableWrap}>
                     <table className={styles.table}>
                         <thead>
                             <tr>
@@ -265,6 +266,7 @@ export default function SearchView() {
                             ))}
                         </tbody>
                     </table>
+                    </div>
                 )}
 
                 {/* Nessun risultato */}

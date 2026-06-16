@@ -11,7 +11,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 20px;
+    /* stessa altezza della striscia brand della sidebar (56px) per allineare i bordi. */
+    height: 56px;
+    padding: 0 20px;
     border-bottom: 1px solid var(--tf-border);
     background: #fafbfc;
     flex-shrink: 0;
@@ -221,6 +223,12 @@
 }
 
 /* ═══ RESULTS TABLE ═══ */
+.tableWrap {
+    /* su schermi stretti la tabella scorre orizzontalmente invece di rompere il layout. */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 2px;
+}
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -544,4 +552,16 @@
     .table tbody td { padding: 6px 8px; }
     .metaGrid { grid-template-columns: 1fr; }
     .overlay { padding: 12px; }
+}
+@media (max-width: 600px) {
+    .header { padding: 0 12px; }
+    .title { display: none; }
+    .scroll { padding: 16px 12px 32px; }
+    .searchSection { padding: 12px 14px; }
+    .searchBtn { padding: 9px 12px; font-size: 0; i { font-size: 14px; } }
+    .meta { margin-left: 0; }
+    /* nascondo le colonne decorative (Gerarchia, Chiavi, Memo, Allegati, Cartelle),
+       tengo Data, Tipo, Descrizione, Rilevanza, Dettaglio AI. */
+    .table th:nth-child(n + 4):nth-child(-n + 8),
+    .table td:nth-child(n + 4):nth-child(-n + 8) { display: none; }
 }
