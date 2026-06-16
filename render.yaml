@@ -19,7 +19,7 @@ services:
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
-        value: "20.18.1"
+        value: "22.16.0"
       # Tetto heap V8 sotto i 512MB del piano free (evita l'abort prematuro).
       - key: NODE_OPTIONS
         value: "--max-old-space-size=460"
@@ -66,7 +66,7 @@ services:
     startCommand: npm run start
     envVars:
       - key: NODE_VERSION
-        value: "20.18.1"
+        value: "22.16.0"
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY

@@ -5,7 +5,7 @@
   "type": "module",
   "description": "topFiler3 — assistente conversazionale (Mastra Agent + Anthropic SDK) su corpus documentale eterogeneo, ricerca ibrida e text-to-SQL su Supabase (Postgres/pgvector). Sorgente documenti: Oracle (sola lettura).",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "ingest": "tsx bin/ingest.ts",

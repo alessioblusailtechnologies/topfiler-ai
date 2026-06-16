@@ -48,6 +48,7 @@ Render builda e avvia entrambi. Il backend espone `/api/health`; il web è l'app
 
 ## Note
 
+- **Node 22 obbligatorio** (`NODE_VERSION=22.16.0` nel `render.yaml`): `@supabase/supabase-js` 2.108+ richiede un `WebSocket` globale, assente su Node 20 (errore "Node.js 20 detected without native WebSocket support"). Node 22 lo include.
 - **Piano free**: i servizi vanno in sleep dopo inattività e hanno un cold start di qualche secondo (il backend transpila con `tsx` all'avvio).
 - **Niente Oracle in produzione**: l'ingestion da Oracle è solo per popolare i dati offline; il runtime usa esclusivamente Supabase. Le variabili `ORACLE_*` / `READONLY_DATABASE_URL` non servono al deploy.
 - **Memory Mastra** (`MASTRA_DATABASE_URL`) è opzionale: lo streaming invia già l'intera history, e la persistenza delle chat è gestita dal web direttamente su Supabase.
