@@ -25,6 +25,9 @@ const Schema = z.object({
 
     // Supabase (service role: ingestion + storage)
     SUPABASE_URL: z.string().url().optional(),
+    // Service role key. SUPABASE_SERVICE_ROLE_KEY è il nome canonico (uguale al
+    // web); SUPABASE_SERVICE_KEY è accettato come alias legacy.
+    SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
     SUPABASE_SERVICE_KEY: z.string().optional(),
     SUPABASE_ANON_KEY: z.string().optional(),
     SUPABASE_STORAGE_BUCKET: z.string().default('topfiler-final-ai-documenti'),
@@ -71,11 +74,11 @@ export function requireMistral(): string {
 }
 
 export function requireSupabase(): { url: string; key: string } {
-    // La service key è consigliata (storage privato + scrittura). In assenza si
-    // ripiega sull'anon key (lecito perché le tabelle hanno RLS disabilitato).
-    const key = env.SUPABASE_SERVICE_KEY || env.SUPABASE_ANON_KEY;
+    // La service role key è consigliata (storage privato + scrittura). In assenza
+    // si ripiega sull'anon key (lecito perché le tabelle hanno RLS disabilitato).
+    const key = env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_SERVICE_KEY || env.SUPABASE_ANON_KEY;
     if (!env.SUPABASE_URL || !key) {
-        throw new Error('SUPABASE_URL e SUPABASE_SERVICE_KEY (o SUPABASE_ANON_KEY) mancanti.');
+        throw new Error('SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (o SUPABASE_ANON_KEY) mancanti.');
     }
     return { url: env.SUPABASE_URL, key };
 }
