@@ -38,10 +38,11 @@ services:
         value: mistral-embed
       - key: MISTRAL_EMBED_DIMS
         value: "1024"
-      # Supabase (service role: RPC text_to_sql/hybrid_search + storage)
+      # Supabase (service role: RPC text_to_sql/hybrid_search + storage).
+      # STESSO valore del web (la service_role key del progetto Supabase).
       - key: SUPABASE_URL
         sync: false
-      - key: SUPABASE_SERVICE_KEY
+      - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
       - key: SUPABASE_STORAGE_BUCKET
         value: topfiler-final-ai-documenti
