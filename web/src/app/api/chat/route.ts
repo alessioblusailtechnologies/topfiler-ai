@@ -45,14 +45,15 @@ export async function POST(req: NextRequest) {
         async start(controller) {
             const send = (obj: unknown) => controller.enqueue(encoder.encode(`data: ${JSON.stringify(obj)}\n\n`));
             let full = '';
+            const target = `${backendUrl()}/api/chat/stream`;
             try {
-                const backendRes = await fetch(`${backendUrl()}/api/chat/stream`, {
+                const backendRes = await fetch(target, {
                     method: 'POST',
                     headers: { 'content-type': 'application/json' },
                     body: JSON.stringify({ messages: [...history, { role: 'user', content: message }] }),
                 });
                 if (!backendRes.ok || !backendRes.body) {
-                    send({ type: 'error', content: `backend non raggiungibile (HTTP ${backendRes.status})` });
+                    send({ type: 'error', content: `backend non raggiungibile (HTTP ${backendRes.status}) [${target}]` });
                     send({ type: 'done' });
                     controller.close();
                     return;
@@ -90,7 +91,13 @@ export async function POST(req: NextRequest) {
                 send({ type: 'done' });
                 controller.close();
             } catch (e) {
-                send({ type: 'error', content: (e as Error).message });
+                // Mostra URL chiamato + codice causa (ECONNREFUSED=localhost,
+                // ENOTFOUND=host errato, ETIMEDOUT/UND_ERR_*=cold start), così la
+                // diagnosi di "fetch failed" è immediata.
+                const err = e as Error & { cause?: { code?: string } };
+                const detail = err.cause?.code ? `${err.message} (${err.cause.code})` : err.message;
+                console.error('chat proxy fetch failed', { target, detail });
+                send({ type: 'error', content: `backend non raggiungibile [${target}]: ${detail}` });
                 try {
                     await sb.from(TABLES.messages).insert({ chat_id: chatId, role: 'assistant', content: full || '(errore)' });
                 } catch {
