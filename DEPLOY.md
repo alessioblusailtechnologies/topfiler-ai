@@ -36,7 +36,7 @@ Al primo deploy Render chiede i valori mancanti. Usa gli stessi del `.env` local
 **topfiler3-web**
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
-- `TOPFILER_BACKEND_URL` → iniettato in automatico dal backend (`fromService`). Se Render fornisce solo l'host, lo schema `https://` viene aggiunto dal codice. In caso di problemi, impostalo a mano: `https://topfiler3-backend.onrender.com`.
+- `TOPFILER_BACKEND_URL` → l'**URL pubblico** del servizio backend, es. `https://topfiler3-backend.onrender.com` (copialo dalla pagina del servizio `topfiler3-backend`). Va impostato a mano: il wiring `fromService` non fornisce l'URL pubblico `.onrender.com`.
 
 > `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` sono **gli stessi valori** in entrambi i servizi (URL del progetto + service_role key di Supabase). Ogni servizio ha il proprio set di variabili, quindi vanno inseriti in tutti e due.
 

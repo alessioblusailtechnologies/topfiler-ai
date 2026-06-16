@@ -73,9 +73,9 @@ services:
         sync: false
       - key: SUPABASE_STORAGE_BUCKET
         value: topfiler-final-ai-documenti
-      # URL del backend: iniettato automaticamente (host del servizio backend).
+      # URL PUBBLICO del backend, es. https://topfiler3-backend.onrender.com
+      # (copialo dalla pagina del servizio backend su Render). NB: il wiring
+      # `fromService property: host` NON restituisce l'URL pubblico .onrender.com,
+      # quindi impostiamo questa variabile a mano.
       - key: TOPFILER_BACKEND_URL
-        fromService:
-          type: web
-          name: topfiler3-backend
-          property: host
+        sync: false
