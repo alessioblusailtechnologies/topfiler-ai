@@ -1,0 +1,40 @@
+{
+  "tipologia": "ORDINE_ACQUISTO",
+  "descrizione": "Ordine di acquisto verso un fornitore, con righe di dettaglio categorizzate (hardware, software, servizio, altro).",
+  "embed_strategy": "RIGHE",
+  "json_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["numero", "data", "fornitore", "righe"],
+    "properties": {
+      "numero": {
+        "type": "string",
+        "description": "Numero dell'ordine di acquisto."
+      },
+      "data": {
+        "type": "string",
+        "format": "date",
+        "description": "Data dell'ordine ISO YYYY-MM-DD."
+      },
+      "fornitore": {
+        "type": "string",
+        "description": "Fornitore destinatario dell'ordine."
+      },
+      "righe": {
+        "type": "array",
+        "description": "Righe di dettaglio dell'ordine.",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["descrizione", "categoria", "quantita", "importo"],
+          "properties": {
+            "descrizione": { "type": "string" },
+            "categoria": { "type": "string", "enum": ["HARDWARE", "SOFTWARE", "SERVIZIO", "ALTRO"] },
+            "quantita": { "type": "number" },
+            "importo": { "type": "number" }
+          }
+        }
+      }
+    }
+  }
+}

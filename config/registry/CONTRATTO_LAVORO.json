@@ -1,0 +1,43 @@
+{
+  "tipologia": "CONTRATTO_LAVORO",
+  "descrizione": "Contratto di lavoro subordinato tra azienda e dipendente. Contiene tipo contratto, decorrenza, eventuale scadenza, mansione, settore e stato corrente.",
+  "embed_strategy": "FULL",
+  "json_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["dipendente_nome_norm", "tipo_contratto", "data_stipula", "mansione", "settore", "stato"],
+    "properties": {
+      "dipendente_nome_norm": {
+        "type": "string",
+        "description": "Nome del dipendente normalizzato UPPERCASE nel formato 'COGNOME NOME'. Chiave di correlazione tra i documenti HR dello stesso dipendente.",
+        "pattern": "^[A-ZÀ-Ù'’ ]{2,}$"
+      },
+      "tipo_contratto": {
+        "type": "string",
+        "enum": ["APPRENDISTATO", "DETERMINATO", "INDETERMINATO"]
+      },
+      "data_stipula": {
+        "type": "string",
+        "format": "date",
+        "description": "Data di stipula/decorrenza in formato ISO YYYY-MM-DD."
+      },
+      "data_scadenza": {
+        "type": ["string", "null"],
+        "format": "date",
+        "description": "Data di scadenza ISO YYYY-MM-DD. null per i contratti a tempo indeterminato."
+      },
+      "mansione": {
+        "type": "string",
+        "description": "Mansione/ruolo, testo libero (es. 'tecnico helpdesk', 'responsabile controllo qualità')."
+      },
+      "settore": {
+        "type": "string",
+        "description": "Settore aziendale (es. 'IT', 'AMMINISTRAZIONE', 'PRODUZIONE')."
+      },
+      "stato": {
+        "type": "string",
+        "enum": ["ATTIVO", "SCADUTO", "RINNOVATO", "NON_RINNOVATO"]
+      }
+    }
+  }
+}

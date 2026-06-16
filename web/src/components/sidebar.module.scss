@@ -1,0 +1,130 @@
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-right: 1px solid var(--tf-border);
+}
+
+/* brand strip — blu scuro come la topbar del POC */
+.brand {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 18px;
+    background: var(--tf-blue-dark);
+    color: #fff;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    i { font-size: 18px; opacity: 0.9; }
+    b { font-weight: 800; }
+}
+
+.newChat {
+    margin: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--tf-blue);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.15s;
+    &:hover { background: var(--tf-blue-dark); }
+}
+
+.listLabel {
+    padding: 4px 18px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--tf-text-muted);
+}
+
+.list {
+    flex: 0 1 auto;
+    min-height: 0;
+    /* altezza massima: la lista cresce col contenuto fino a questo limite,
+       poi scrolla internamente (il resto della sidebar resta fisso). */
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
+    padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.empty {
+    padding: 12px 10px;
+    font-size: 12.5px;
+    color: var(--tf-text-muted);
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--tf-text-secondary);
+    font-size: 13px;
+    transition: background 0.12s, color 0.12s;
+
+    i { font-size: 13px; flex-shrink: 0; color: var(--tf-text-muted); }
+    &:hover {
+        background: #f0f5fb;
+        color: var(--tf-text);
+        .del { opacity: 1; }
+    }
+    &.active {
+        background: #e3f2fd;
+        color: var(--tf-blue-dark);
+        font-weight: 600;
+        i { color: var(--tf-blue); }
+    }
+}
+.itemTitle {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.del {
+    opacity: 0;
+    border: none;
+    background: transparent;
+    color: var(--tf-text-muted);
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: opacity 0.12s, color 0.12s, background 0.12s;
+    i { font-size: 12px; }
+    &:hover { color: var(--tf-red); background: rgba(178, 0, 0, 0.08); }
+}
+
+.footer {
+    margin-top: auto;
+    padding: 12px 18px;
+    font-size: 11px;
+    color: var(--tf-text-muted);
+    border-top: 1px solid var(--tf-border);
+}
+
+@media (max-width: 768px) {
+    .sidebar { width: 64px; }
+    .brand span, .newChat span, .listLabel, .itemTitle, .footer { display: none; }
+    .newChat { margin: 12px 8px; padding: 10px 0; }
+    .item { justify-content: center; }
+    .del { display: none; }
+}

@@ -1,0 +1,26 @@
+{
+  "tipologia": "RICHIAMO_DISCIPLINARE",
+  "descrizione": "Lettera di richiamo/contestazione disciplinare a un dipendente, con data e motivo.",
+  "embed_strategy": "NONE",
+  "json_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["dipendente_nome_norm", "data", "motivo"],
+    "properties": {
+      "dipendente_nome_norm": {
+        "type": "string",
+        "description": "Nome del dipendente normalizzato UPPERCASE 'COGNOME NOME'. Chiave di correlazione HR.",
+        "pattern": "^[A-ZÀ-Ù'’ ]{2,}$"
+      },
+      "data": {
+        "type": "string",
+        "format": "date",
+        "description": "Data del richiamo ISO YYYY-MM-DD."
+      },
+      "motivo": {
+        "type": "string",
+        "description": "Motivazione sintetica del richiamo disciplinare."
+      }
+    }
+  }
+}

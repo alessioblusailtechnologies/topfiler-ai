@@ -1,0 +1,5 @@
+# Normalizza i fine-riga a LF nel repo (build/run su Linux su Render).
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.pdf binary

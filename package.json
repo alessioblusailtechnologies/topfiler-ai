@@ -1,0 +1,51 @@
+{
+  "name": "topfiler3",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "topFiler3 — assistente conversazionale (Mastra Agent + Anthropic SDK) su corpus documentale eterogeneo, ricerca ibrida e text-to-SQL su Supabase (Postgres/pgvector). Sorgente documenti: Oracle (sola lettura).",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "ingest": "tsx bin/ingest.ts",
+    "server": "tsx src/server/server.ts",
+    "mastra:dev": "mastra dev",
+    "seed:demo": "tsx bin/seed-demo.ts",
+    "seed:files": "tsx bin/seed-files.ts",
+    "sync:storage": "tsx bin/sync-storage.ts",
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "supabase db push"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.65.0",
+    "@hono/node-server": "^1.13.7",
+    "@mastra/core": "^1.42.0",
+    "@mastra/memory": "^1.20.3",
+    "@mastra/pg": "^1.13.0",
+    "@mistralai/mistralai": "^2.2.5",
+    "@supabase/supabase-js": "^2.49.0",
+    "@types/pdfkit": "^0.17.6",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "dotenv": "^16.4.7",
+    "exceljs": "^4.4.0",
+    "hono": "^4.6.14",
+    "node-sql-parser": "^5.3.5",
+    "officeparser": "^5.1.1",
+    "oracledb": "^6.7.0",
+    "p-limit": "^6.1.0",
+    "pdf-parse": "^1.1.1",
+    "pdfkit": "^0.19.1",
+    "pg": "^8.13.1",
+    "tsx": "^4.19.2",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/pdf-parse": "^1.1.4",
+    "@types/pg": "^8.11.10",
+    "mastra": "^1.13.0",
+    "typescript": "^5.7.2"
+  }
+}

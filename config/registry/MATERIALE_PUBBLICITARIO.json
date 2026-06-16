@@ -1,0 +1,24 @@
+{
+  "tipologia": "MATERIALE_PUBBLICITARIO",
+  "descrizione": "Materiale pubblicitario/promozionale di una campagna (volantini, brochure, promozioni), indicizzato per la ricerca semantica.",
+  "embed_strategy": "FULL",
+  "json_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["campagna", "anno"],
+    "properties": {
+      "campagna": {
+        "type": "string",
+        "description": "Nome o identificativo della campagna."
+      },
+      "anno": {
+        "type": "integer",
+        "description": "Anno della campagna (intero, es. 2025)."
+      },
+      "target": {
+        "type": ["string", "null"],
+        "description": "Target/pubblico di riferimento della campagna, se indicato."
+      }
+    }
+  }
+}

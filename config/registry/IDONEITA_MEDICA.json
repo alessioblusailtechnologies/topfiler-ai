@@ -1,0 +1,26 @@
+{
+  "tipologia": "IDONEITA_MEDICA",
+  "descrizione": "Giudizio di idoneità medica alla mansione rilasciato dal medico competente. Validità tipica 24 mesi dalla data di emissione.",
+  "embed_strategy": "NONE",
+  "json_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["dipendente_nome_norm", "data_emissione", "esito"],
+    "properties": {
+      "dipendente_nome_norm": {
+        "type": "string",
+        "description": "Nome del dipendente normalizzato UPPERCASE 'COGNOME NOME'. Chiave di correlazione HR.",
+        "pattern": "^[A-ZÀ-Ù'’ ]{2,}$"
+      },
+      "data_emissione": {
+        "type": "string",
+        "format": "date",
+        "description": "Data di emissione del giudizio ISO YYYY-MM-DD."
+      },
+      "esito": {
+        "type": "string",
+        "description": "Esito del giudizio (es. 'IDONEO', 'IDONEO CON PRESCRIZIONI', 'NON IDONEO')."
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+:root {
+    --tf-blue: #1976d2;
+    --tf-blue-dark: #1565c0;
+    --tf-blue-header: #1e88e5;
+    --tf-blue-light: #93c4f5;
+    --tf-th-bg: #1e88e5;
+    --tf-row-hover: #e3f2fd;
+    --tf-white: #ffffff;
+    --tf-bg: #fafafa;
+    --tf-border: #e0e0e0;
+    --tf-border-light: #eeeeee;
+    --tf-text: #212121;
+    --tf-text-strong: #0a1f33;
+    --tf-text-secondary: #757575;
+    --tf-text-muted: #9e9e9e;
+    --tf-red: #b20000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--tf-text);
+    background: var(--tf-bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}

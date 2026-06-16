@@ -1,0 +1,47 @@
+{
+  "tipologia": "OFFERTA_ACQUISTO",
+  "descrizione": "Offerta commerciale ricevuta da un fornitore, con oggetto, eventuale numero di licenze e righe di dettaglio.",
+  "embed_strategy": "RIGHE",
+  "json_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["data", "anno", "fornitore", "oggetto", "righe"],
+    "properties": {
+      "data": {
+        "type": "string",
+        "format": "date",
+        "description": "Data dell'offerta ISO YYYY-MM-DD."
+      },
+      "anno": {
+        "type": "integer",
+        "description": "Anno dell'offerta (intero, es. 2025)."
+      },
+      "fornitore": {
+        "type": "string",
+        "description": "Fornitore che emette l'offerta."
+      },
+      "num_licenze": {
+        "type": ["integer", "null"],
+        "minimum": 0,
+        "description": "Numero di licenze/utenti offerti, se l'offerta riguarda licenze software; altrimenti null."
+      },
+      "oggetto": {
+        "type": "string",
+        "description": "Oggetto sintetico dell'offerta."
+      },
+      "righe": {
+        "type": "array",
+        "description": "Righe di dettaglio dell'offerta.",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["descrizione", "importo"],
+          "properties": {
+            "descrizione": { "type": "string" },
+            "importo": { "type": "number" }
+          }
+        }
+      }
+    }
+  }
+}

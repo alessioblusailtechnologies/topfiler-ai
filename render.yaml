@@ -1,0 +1,77 @@
+# ===========================================================================
+# Render Blueprint — topFiler3 (final)
+# Due servizi web nello stesso repo:
+#   1. topfiler3-backend  → server Hono + agente Mastra (rootDir ".")
+#   2. topfiler3-web      → client Next.js (rootDir "web")
+# I segreti (sync: false) vanno inseriti nella dashboard Render al primo deploy.
+# Il web riceve l'URL del backend automaticamente via fromService.
+# ===========================================================================
+services:
+  # ---- Backend: agente + tool (chat/search/export) ----------------------
+  - type: web
+    name: topfiler3-backend
+    runtime: node
+    rootDir: .
+    region: frankfurt
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run server
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "20.18.1"
+      # Anthropic (agente + chiamate di servizio classify/extract/sql-gen)
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: AGENT_MODEL
+        value: anthropic/claude-sonnet-4-6
+      - key: CLASSIFY_MODEL
+        value: claude-haiku-4-5
+      - key: EXTRACT_MODEL
+        value: claude-sonnet-4-6
+      - key: SQLGEN_MODEL
+        value: claude-sonnet-4-6
+      # Mistral (embedding per hybrid_search / ricerca)
+      - key: MISTRAL_API_KEY
+        sync: false
+      - key: MISTRAL_EMBED_MODEL
+        value: mistral-embed
+      - key: MISTRAL_EMBED_DIMS
+        value: "1024"
+      # Supabase (service role: RPC text_to_sql/hybrid_search + storage)
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: topfiler-final-ai-documenti
+      # Memory di Mastra (opzionale: lo streaming passa già tutta la history).
+      # - key: MASTRA_DATABASE_URL
+      #   sync: false
+
+  # ---- Frontend: assistente + ricerca (Next.js) -------------------------
+  - type: web
+    name: topfiler3-web
+    runtime: node
+    rootDir: web
+    region: frankfurt
+    plan: free
+    # --include=dev: su Render NODE_ENV=production esclude le devDependencies,
+    # ma sass/typescript servono per `next build`.
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: "20.18.1"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: topfiler-final-ai-documenti
+      # URL del backend: iniettato automaticamente (host del servizio backend).
+      - key: TOPFILER_BACKEND_URL
+        fromService:
+          type: web
+          name: topfiler3-backend
+          property: host

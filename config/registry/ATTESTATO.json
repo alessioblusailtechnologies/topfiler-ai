@@ -1,0 +1,31 @@
+{
+  "tipologia": "ATTESTATO",
+  "descrizione": "Attestato di formazione di un dipendente (sicurezza, primo soccorso, antincendio). Ha una validità in mesi dalla data di emissione.",
+  "embed_strategy": "NONE",
+  "json_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["dipendente_nome_norm", "tipo_corso", "data_emissione"],
+    "properties": {
+      "dipendente_nome_norm": {
+        "type": "string",
+        "description": "Nome del dipendente normalizzato UPPERCASE 'COGNOME NOME'. Chiave di correlazione HR.",
+        "pattern": "^[A-ZÀ-Ù'’ ]{2,}$"
+      },
+      "tipo_corso": {
+        "type": "string",
+        "enum": ["SICUREZZA", "PRIMO_SOCCORSO", "ANTINCENDIO", "ALTRO"]
+      },
+      "data_emissione": {
+        "type": "string",
+        "format": "date",
+        "description": "Data di emissione ISO YYYY-MM-DD."
+      },
+      "validita_mesi": {
+        "type": ["integer", "null"],
+        "minimum": 0,
+        "description": "Durata della validità in mesi dalla data di emissione, se indicata."
+      }
+    }
+  }
+}

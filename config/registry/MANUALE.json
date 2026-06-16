@@ -1,0 +1,24 @@
+{
+  "tipologia": "MANUALE",
+  "descrizione": "Manuale tecnico o operativo di un prodotto. Documento testuale lungo, indicizzato per la ricerca semantica.",
+  "embed_strategy": "FULL",
+  "json_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["prodotto", "argomento"],
+    "properties": {
+      "prodotto": {
+        "type": "string",
+        "description": "Prodotto a cui il manuale si riferisce."
+      },
+      "versione": {
+        "type": ["string", "null"],
+        "description": "Versione del prodotto o del manuale, se indicata."
+      },
+      "argomento": {
+        "type": "string",
+        "description": "Argomento principale del manuale (es. 'installazione', 'gestione utenti e ruoli')."
+      }
+    }
+  }
+}

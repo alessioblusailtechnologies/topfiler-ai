@@ -1,0 +1,57 @@
+{
+  "tipologia": "FATTURA",
+  "descrizione": "Fattura attiva (emessa) o passiva (ricevuta), con controparte, importo totale e righe di dettaglio (beni o servizi, con eventuale tipo di manutenzione).",
+  "embed_strategy": "RIGHE",
+  "json_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["direzione", "numero", "data_emissione", "controparte", "importo_totale", "righe"],
+    "properties": {
+      "direzione": {
+        "type": "string",
+        "enum": ["ATTIVA", "PASSIVA"],
+        "description": "ATTIVA = emessa verso un cliente; PASSIVA = ricevuta da un fornitore."
+      },
+      "numero": {
+        "type": "string",
+        "description": "Numero della fattura."
+      },
+      "data_emissione": {
+        "type": "string",
+        "format": "date",
+        "description": "Data di emissione ISO YYYY-MM-DD."
+      },
+      "controparte": {
+        "type": "string",
+        "description": "Cliente (se ATTIVA) o fornitore (se PASSIVA)."
+      },
+      "importo_totale": {
+        "type": "number",
+        "description": "Importo totale della fattura (numero, punto come separatore decimale)."
+      },
+      "righe": {
+        "type": "array",
+        "description": "Righe di dettaglio della fattura.",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["descrizione", "tipo", "importo"],
+          "properties": {
+            "descrizione": { "type": "string" },
+            "tipo": { "type": "string", "enum": ["BENE", "SERVIZIO"] },
+            "importo": { "type": "number" },
+            "tipo_manutenzione": {
+              "type": ["string", "null"],
+              "description": "Se la riga è un servizio di manutenzione, il tipo (es. 'ORDINARIA', 'STRAORDINARIA', 'PREVENTIVA', 'CORRETTIVA'); altrimenti null."
+            }
+          }
+        }
+      },
+      "num_righe_servizio": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Numero di righe di tipo SERVIZIO. Valore RICALCOLATO dal codice in ingestion: non fare affidamento sul valore prodotto dall'LLM."
+      }
+    }
+  }
+}
