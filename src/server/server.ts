@@ -63,6 +63,11 @@ function describeTool(name: string): string {
         case 'hybrid_search': return 'Sto cercando nei documenti (ricerca semantica)…';
         case 'get_document': return 'Sto recuperando il documento…';
         case 'list_schema': return 'Sto consultando le tipologie disponibili…';
+        case 'create_excel': return 'Sto generando il file Excel…';
+        case 'create_csv': return 'Sto generando il file CSV…';
+        case 'create_pdf': return 'Sto generando il PDF…';
+        case 'send_email': return "Sto inviando l'email…";
+        case 'web_search': return 'Sto cercando sul web…';
         default: return "Sto consultando l'archivio…";
     }
 }

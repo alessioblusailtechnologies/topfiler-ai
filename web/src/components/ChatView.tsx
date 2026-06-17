@@ -21,10 +21,29 @@ export default function ChatView({ initialChat }: { initialChat?: InitialChat })
     const [messages, setMessages] = useState<ChatMessage[]>(initialChat?.messages ?? []);
     const [input, setInput] = useState('');
     const [streaming, setStreaming] = useState(false);
-    const [thinking, setThinking] = useState(false);
     const [status, setStatus] = useState<string | null>(null);
+    const [streamingId, setStreamingId] = useState<string | null>(null);
+    const [idle, setIdle] = useState(false);
+    const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const endRef = useRef<HTMLDivElement>(null);
     const taRef = useRef<HTMLTextAreaElement>(null);
+
+    // Mentre l'agente lavora vogliamo SEMPRE un indicatore. markActivity resetta un
+    // timer a ogni evento; se non arriva nulla per un po', `idle` diventa true e
+    // mostriamo un messaggio generico anche tra un tool e l'altro (niente vuoti).
+    const markActivity = useCallback(() => {
+        setIdle(false);
+        if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+        idleTimerRef.current = setTimeout(() => setIdle(true), 700);
+    }, []);
+    const stopIdleWatch = useCallback(() => {
+        if (idleTimerRef.current) {
+            clearTimeout(idleTimerRef.current);
+            idleTimerRef.current = null;
+        }
+        setIdle(false);
+    }, []);
+    useEffect(() => () => stopIdleWatch(), [stopIdleWatch]);
 
     useEffect(() => {
         // Durante lo streaming lo scroll è istantaneo: ri-lanciare uno scroll
@@ -35,9 +54,10 @@ export default function ChatView({ initialChat }: { initialChat?: InitialChat })
 
     const runTurn = useCallback(async (targetChatId: string, content: string, prior: ChatMessage[]) => {
         setStreaming(true);
-        setThinking(true);
         setStatus(null);
         const botId = uid();
+        setStreamingId(botId);
+        markActivity();
         setMessages((prev) => [...prev, { id: botId, role: 'assistant', content: '' }]);
         let got = ''; // tutto il testo ricevuto finora (target)
         let shown = 0; // caratteri attualmente mostrati
@@ -91,11 +111,12 @@ export default function ChatView({ initialChat }: { initialChat?: InitialChat })
                         const data = JSON.parse(line.slice(6));
                         if (data.type === 'text') {
                             got += data.content;
-                            setThinking(false);
                             setStatus(null);
+                            markActivity();
                             ensureLoop();
                         } else if (data.type === 'status') {
                             setStatus(typeof data.content === 'string' ? data.content : null);
+                            markActivity();
                         } else if (data.type === 'title') {
                             window.dispatchEvent(new CustomEvent('tfai:chats-updated'));
                         } else if (data.type === 'error') {
@@ -120,11 +141,12 @@ export default function ChatView({ initialChat }: { initialChat?: InitialChat })
             );
         } finally {
             finished = true;
+            stopIdleWatch();
             setStreaming(false);
-            setThinking(false);
+            setStreamingId(null);
             setStatus(null);
         }
-    }, []);
+    }, [markActivity, stopIdleWatch]);
 
     const send = useCallback(
         async (raw: string) => {
@@ -164,15 +186,16 @@ export default function ChatView({ initialChat }: { initialChat?: InitialChat })
     // non lo rimonterebbe — stesso componente — quindi resettiamo qui) e riporta l'URL a "/".
     const newChat = useCallback(() => {
         setStreaming(false);
-        setThinking(false);
+        stopIdleWatch();
         setStatus(null);
+        setStreamingId(null);
         setInput('');
         setMessages([]);
         setChatId(null);
         if (typeof window !== 'undefined' && window.location.pathname !== '/') {
             window.history.replaceState(null, '', '/');
         }
-    }, []);
+    }, [stopIdleWatch]);
 
     // "Nuova chat" dalla sidebar (componente diverso) → evento globale.
     useEffect(() => {
@@ -249,16 +272,21 @@ export default function ChatView({ initialChat }: { initialChat?: InitialChat })
                                 <div className={styles.text}>
                                     {m.role === 'user' ? (
                                         m.content
-                                    ) : m.content ? (
-                                        <MarkdownRenderer content={m.content} />
-                                    ) : thinking ? (
-                                        <div className={styles.typing}>
-                                            <span />
-                                            <span />
-                                            <span />
-                                            <span className={styles.typingLabel}>{status ?? 'Sto ragionando…'}</span>
-                                        </div>
-                                    ) : null}
+                                    ) : (
+                                        <>
+                                            {m.content && <MarkdownRenderer content={m.content} />}
+                                            {streamingId === m.id && (!m.content || status !== null || idle) && (
+                                                <div className={`${styles.typing} ${m.content ? styles.typingInline : ''}`}>
+                                                    <span />
+                                                    <span />
+                                                    <span />
+                                                    <span className={styles.typingLabel}>
+                                                        {status ?? (m.content ? 'Sto elaborando…' : 'Sto ragionando…')}
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>

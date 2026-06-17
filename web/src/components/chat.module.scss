@@ -212,6 +212,13 @@
     font-style: italic;
     color: var(--tf-text-secondary);
 }
+/* indicatore "sta lavorando" mostrato SOTTO il testo già scritto (tool in corso) */
+.typingInline {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--tf-border);
+    opacity: 0.9;
+}
 @keyframes bounce {
     0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
     30% { opacity: 1; transform: translateY(-4px); }
