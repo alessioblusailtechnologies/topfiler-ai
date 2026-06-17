@@ -32,8 +32,8 @@ const Schema = z.object({
     SUPABASE_ANON_KEY: z.string().optional(),
     SUPABASE_STORAGE_BUCKET: z.string().default('topfiler-final-ai-documenti'),
 
-    // SMTP (invio email — tool send_email). Default su mail.com (= GMX/IONOS).
-    SMTP_HOST: z.string().default('smtp.mail.com'),
+    // SMTP (invio email — tool send_email). Default su Gmail.
+    SMTP_HOST: z.string().default('smtp.gmail.com'),
     SMTP_PORT: z.coerce.number().int().positive().default(587),
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),

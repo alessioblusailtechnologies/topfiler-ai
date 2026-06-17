@@ -49,9 +49,10 @@ services:
         sync: false
       - key: SUPABASE_STORAGE_BUCKET
         value: topfiler-final-ai-documenti
-      # SMTP (invio email — tool send_email). Default mail.com; USER/PASS sono segreti.
+      # SMTP (invio email — tool send_email). Default Gmail; USER/PASS sono segreti.
+      # SMTP_PASS = App Password Google (16 caratteri), non la password normale.
       - key: SMTP_HOST
-        value: smtp.mail.com
+        value: smtp.gmail.com
       - key: SMTP_PORT
         value: "587"
       - key: SMTP_USER
