@@ -32,10 +32,12 @@ const Schema = z.object({
     SUPABASE_ANON_KEY: z.string().optional(),
     SUPABASE_STORAGE_BUCKET: z.string().default('topfiler-final-ai-documenti'),
 
-    // Resend (invio email — tool send_email)
-    RESEND_API_KEY: z.string().optional(),
-    RESEND_FROM_EMAIL: z.string().default('onboarding@resend.dev'),
-    RESEND_FROM_NAME: z.string().default('topFiler3'),
+    // SMTP (invio email — tool send_email). Default su GMX.
+    SMTP_HOST: z.string().default('mail.gmx.com'),
+    SMTP_PORT: z.coerce.number().int().positive().default(587),
+    SMTP_USER: z.string().optional(),
+    SMTP_PASS: z.string().optional(),
+    SMTP_FROM_NAME: z.string().default('topFiler3'),
 
     // Postgres per la memory di Mastra
     MASTRA_DATABASE_URL: z.string().optional(),
@@ -78,9 +80,11 @@ export function requireMistral(): string {
     return env.MISTRAL_API_KEY;
 }
 
-export function requireResend(): string {
-    if (!env.RESEND_API_KEY) throw new Error('RESEND_API_KEY mancante (necessaria per inviare email).');
-    return env.RESEND_API_KEY;
+export function requireSmtp(): { host: string; port: number; user: string; pass: string } {
+    if (!env.SMTP_USER || !env.SMTP_PASS) {
+        throw new Error('SMTP_USER / SMTP_PASS mancanti (necessari per inviare email via SMTP).');
+    }
+    return { host: env.SMTP_HOST, port: env.SMTP_PORT, user: env.SMTP_USER, pass: env.SMTP_PASS };
 }
 
 export function requireSupabase(): { url: string; key: string } {

@@ -32,6 +32,7 @@
     "exceljs": "^4.4.0",
     "hono": "^4.6.14",
     "node-sql-parser": "^5.3.5",
+    "nodemailer": "^9.0.1",
     "officeparser": "^5.1.1",
     "oracledb": "^6.7.0",
     "p-limit": "^6.1.0",
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
+    "@types/nodemailer": "^8.0.1",
     "@types/pdf-parse": "^1.1.4",
     "@types/pg": "^8.11.10",
     "@types/ws": "^8.18.1",

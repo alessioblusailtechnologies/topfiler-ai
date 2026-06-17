@@ -49,12 +49,16 @@ services:
         sync: false
       - key: SUPABASE_STORAGE_BUCKET
         value: topfiler-final-ai-documenti
-      # Resend (invio email — tool send_email)
-      - key: RESEND_API_KEY
+      # SMTP (invio email — tool send_email). Default GMX; USER/PASS sono segreti.
+      - key: SMTP_HOST
+        value: mail.gmx.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
         sync: false
-      - key: RESEND_FROM_EMAIL
-        value: onboarding@resend.dev
-      - key: RESEND_FROM_NAME
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM_NAME
         value: topFiler3
       # Memory di Mastra (opzionale: lo streaming passa già tutta la history).
       # - key: MASTRA_DATABASE_URL
