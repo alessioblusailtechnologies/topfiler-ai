@@ -73,7 +73,8 @@ export const sendEmailTool = createTool({
             const transporter = nodemailer.createTransport({
                 host: smtp.host,
                 port: smtp.port,
-                secure: smtp.port === 465, // 465 = SSL; 587 = STARTTLS
+                secure: smtp.port === 465, // 465 = SSL implicito; 587 = STARTTLS
+                requireTLS: smtp.port !== 465, // forza STARTTLS sui 587 (richiesto da mail.com/GMX)
                 auth: { user: smtp.user, pass: smtp.pass },
             });
             const info = await transporter.sendMail({

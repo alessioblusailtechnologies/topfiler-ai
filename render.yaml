@@ -49,9 +49,9 @@ services:
         sync: false
       - key: SUPABASE_STORAGE_BUCKET
         value: topfiler-final-ai-documenti
-      # SMTP (invio email — tool send_email). Default GMX; USER/PASS sono segreti.
+      # SMTP (invio email — tool send_email). Default mail.com; USER/PASS sono segreti.
       - key: SMTP_HOST
-        value: mail.gmx.com
+        value: smtp.mail.com
       - key: SMTP_PORT
         value: "587"
       - key: SMTP_USER
