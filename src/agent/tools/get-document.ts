@@ -23,6 +23,8 @@ export const getDocumentTool = createTool({
         tipologia: z.string().optional(),
         filename: z.string().nullable().optional(),
         signed_url: z.string().optional(),
+        // storage_path: utile per allegare il documento con send_email.
+        storage_path: z.string().nullable().optional(),
         metadata: z.record(z.any()).optional(),
         note: z.string().optional(),
     }),
@@ -32,13 +34,13 @@ export const getDocumentTool = createTool({
             return { found: false, doc_id, note: `Nessun documento con id ${doc_id}.` };
         }
         if (!doc.storage_path) {
-            return { found: true, doc_id, tipologia: doc.tipologia, filename: doc.filename, metadata: doc.metadata, note: 'Documento senza file su storage.' };
+            return { found: true, doc_id, tipologia: doc.tipologia, filename: doc.filename, storage_path: null, metadata: doc.metadata, note: 'Documento senza file su storage.' };
         }
         try {
             const signed_url = await createSignedUrl(doc.storage_path, expires_in ?? 600);
-            return { found: true, doc_id, tipologia: doc.tipologia, filename: doc.filename, signed_url, metadata: doc.metadata };
+            return { found: true, doc_id, tipologia: doc.tipologia, filename: doc.filename, signed_url, storage_path: doc.storage_path, metadata: doc.metadata };
         } catch (e) {
-            return { found: true, doc_id, tipologia: doc.tipologia, filename: doc.filename, metadata: doc.metadata, note: `signed URL non disponibile: ${(e as Error).message}` };
+            return { found: true, doc_id, tipologia: doc.tipologia, filename: doc.filename, storage_path: doc.storage_path, metadata: doc.metadata, note: `signed URL non disponibile: ${(e as Error).message}` };
         }
     },
 });

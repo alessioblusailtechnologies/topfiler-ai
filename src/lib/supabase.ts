@@ -67,6 +67,15 @@ export async function createSignedUrl(path: string, expiresInSeconds = 600): Pro
     return data.signedUrl;
 }
 
+/** Scarica un file da Storage e lo ritorna come base64 (per gli allegati email). */
+export async function downloadFileBase64(path: string): Promise<{ base64: string; filename: string }> {
+    const sb = getSupabase();
+    const { data, error } = await sb.storage.from(storageBucket()).download(path);
+    if (error || !data) throw new Error(`storage.download(${path}): ${error?.message ?? 'no data'}`);
+    const buf = Buffer.from(await data.arrayBuffer());
+    return { base64: buf.toString('base64'), filename: path.split('/').pop() || 'allegato' };
+}
+
 // ---------------------------------------------------------------------------
 // Scrittura ingestion (service role)
 // ---------------------------------------------------------------------------

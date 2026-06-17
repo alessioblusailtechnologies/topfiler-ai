@@ -32,6 +32,11 @@ const Schema = z.object({
     SUPABASE_ANON_KEY: z.string().optional(),
     SUPABASE_STORAGE_BUCKET: z.string().default('topfiler-final-ai-documenti'),
 
+    // Resend (invio email — tool send_email)
+    RESEND_API_KEY: z.string().optional(),
+    RESEND_FROM_EMAIL: z.string().default('onboarding@resend.dev'),
+    RESEND_FROM_NAME: z.string().default('topFiler3'),
+
     // Postgres per la memory di Mastra
     MASTRA_DATABASE_URL: z.string().optional(),
 
@@ -71,6 +76,11 @@ export type Env = typeof env;
 export function requireMistral(): string {
     if (!env.MISTRAL_API_KEY) throw new Error('MISTRAL_API_KEY mancante (necessaria per gli embedding).');
     return env.MISTRAL_API_KEY;
+}
+
+export function requireResend(): string {
+    if (!env.RESEND_API_KEY) throw new Error('RESEND_API_KEY mancante (necessaria per inviare email).');
+    return env.RESEND_API_KEY;
 }
 
 export function requireSupabase(): { url: string; key: string } {

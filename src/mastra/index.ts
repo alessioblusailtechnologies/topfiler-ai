@@ -10,6 +10,7 @@ import { getDocumentTool } from '../agent/tools/get-document';
 import { listSchemaTool } from '../agent/tools/list-schema';
 import { webSearchTool } from '../agent/tools/stubs';
 import { createExcelTool, createCsvTool, createPdfTool } from '../agent/tools/create-files';
+import { sendEmailTool } from '../agent/tools/send-email';
 
 // ===========================================================================
 // Istanza Mastra + Agent conversazionale topFiler3.
@@ -48,6 +49,7 @@ export const topfilerAgent = new Agent({
         create_excel: createExcelTool,
         create_csv: createCsvTool,
         create_pdf: createPdfTool,
+        send_email: sendEmailTool,
     },
     memory,
 });
